@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrainCraft Studios - استودیو بازی‌سازی</title>
+<!-- External CSS -->
+<link rel="stylesheet" href="css/style.css">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#6200EA',
+secondary: '#00E676'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+}
+}
+}
+}
+</script>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<!-- Charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Vazirmatn', sans-serif;
+background-color: #f9f9ff;
+}
+.hero-gradient {
+background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(98,0,234,0.75) 100%);
+}
+.game-card:hover .game-overlay {
+opacity: 1;
+}
+.team-card {
+transition: transform 0.3s ease;
+transform-style: preserve-3d;
+}
+.team-card:hover {
+transform: translateY(-10px);
+}
+.social-icon {
+transition: all 0.3s ease;
+}
+.social-icon:hover {
+transform: translateY(-3px);
+filter: drop-shadow(0 0 8px currentColor);
+}
+.custom-checkbox {
+position: relative;
+padding-right: 30px;
+cursor: pointer;
+user-select: none;
+}
+.custom-checkbox input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+height: 0;
+width: 0;
+}
+.checkmark {
+position: absolute;
+top: 0;
+right: 0;
+height: 20px;
+width: 20px;
+background-color: #f1f1f1;
+border-radius: 4px;
+transition: all 0.2s ease;
+}
+.custom-checkbox:hover input ~ .checkmark {
+background-color: #ddd;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #6200EA;
+}
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+.custom-checkbox .checkmark:after {
+left: 7px;
+top: 3px;
+width: 6px;
+height: 12px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 50px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+transition: .4s;
+border-radius: 34px;
+}
+.slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked + .slider {
+background-color: #6200EA;
+}
+input:checked + .slider:before {
+transform: translateX(26px);
+}
+.tab-active {
+background-color: #6200EA;
+color: white;
+}
+.donate-progress {
+height: 10px;
+background-color: #e0e0e0;
+border-radius: 5px;
+overflow: hidden;
+}
+.donate-progress-bar {
+height: 100%;
+background: linear-gradient(90deg, #6200EA, #00E676);
+border-radius: 5px;
+width: 65%;
+}
+</style>
+</head>
+<body>
+<!-- Header Section -->
+<header class="bg-gray-900 text-white shadow-lg">
+<div class="container mx-auto px-4 py-3">
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<a href="#" class="text-3xl font-['Pacifico'] text-primary mr-8">BrainCraft</a>
+<nav class="hidden md:flex space-x-1 space-x-reverse">
+<a href="#" class="nav-link px-4 py-2 rounded-button hover:bg-gray-800 transition">خانه</a>
+<a href="#games" class="nav-link px-4 py-2 rounded-button hover:bg-gray-800 transition">بازی‌ها</a>
+<a href="#team" class="nav-link px-4 py-2 rounded-button hover:bg-gray-800 transition">تیم ما</a>
+<a href="#about" class="nav-link px-4 py-2 rounded-button hover:bg-gray-800 transition">درباره ما</a>
+<a href="#blog" class="nav-link px-4 py-2 rounded-button hover:bg-gray-800 transition">وبلاگ</a>
+<a href="#donate" class="nav-link px-4 py-2 rounded-button hover:bg-gray-800 transition">حمایت</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4 space-x-reverse">
+<a href="#download" class="bg-primary text-white px-6 py-2 rounded-button hover:bg-opacity-90 transition whitespace-nowrap">دانلود بازی‌ها</a>
+<div class="flex items-center border border-gray-700 rounded-full px-2">
+<button class="px-2 py-1 text-sm rounded-full tab-active">فارسی</button>
+<button class="px-2 py-1 text-sm rounded-full">English</button>
+</div>
+<button class="md:hidden w-10 h-10 flex items-center justify-center">
+<i class="ri-menu-line ri-lg"></i>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative h-[600px] overflow-hidden">
+<div style="background-image: url('https://readdy.ai/api/search-image?query=futuristic%20gaming%20studio%20with%20neon%20lights%2C%20cyberpunk%20style%2C%20digital%20world%2C%20video%20game%20development%20environment%20with%20glowing%20particles%2C%20dark%20atmosphere%20with%20purple%20and%20blue%20highlights%2C%20high%20quality%2C%20detailed%2C%20modern&width=1920&height=1080&seq=1&orientation=landscape');" class="absolute inset-0 bg-cover bg-center"></div>
+<div class="hero-gradient absolute inset-0"></div>
+<div class="container mx-auto px-4 py-16 relative z-10 h-full flex flex-col justify-center">
+<div class="max-w-3xl">
+<h1 class="text-5xl font-bold text-white mb-6">استودیو <span class="text-primary">بازی‌سازی</span> خلاق و نوآور</h1>
+<p class="text-xl text-gray-200 mb-8">در BrainCraft Studios، ما با ترکیب هنر، تکنولوژی و داستان‌سرایی، تجربه‌های بازی منحصر به فردی خلق می‌کنیم که مرزهای خلاقیت را جابجا می‌کند.</p>
+<div class="flex flex-wrap gap-4">
+<a href="#games" class="bg-primary text-white px-8 py-3 rounded-button hover:bg-opacity-90 transition whitespace-nowrap">مشاهده بازی‌ها</a>
+<a href="#about" class="bg-white bg-opacity-20 backdrop-blur-sm text-white border border-white border-opacity-30 px-8 py-3 rounded-button hover:bg-opacity-30 transition whitespace-nowrap">درباره استودیو</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="py-16 bg-white">
+<div class="container mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="text-center p-6 rounded-lg shadow-md bg-white border border-gray-100">
+<div class="text-4xl font-bold text-primary mb-2">۱۲+</div>
+<div class="text-gray-600">بازی منتشر شده</div>
+</div>
+<div class="text-center p-6 rounded-lg shadow-md bg-white border border-gray-100">
+<div class="text-4xl font-bold text-primary mb-2">۳.۵M+</div>
+<div class="text-gray-600">دانلود</div>
+</div>
+<div class="text-center p-6 rounded-lg shadow-md bg-white border border-gray-100">
+<div class="text-4xl font-bold text-primary mb-2">۸۵۰K+</div>
+<div class="text-gray-600">کاربر فعال</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Games Section -->
+<section id="games" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold mb-4">بازی‌های ما</h2>
+<p class="text-gray-600 max-w-2xl mx-auto">مجموعه‌ای از بازی‌های منحصر به فرد با ژانرهای متنوع برای تمام سلیقه‌ها</p>
+</div>
+<!-- Filters -->
+<div class="mb-8 flex flex-wrap justify-center gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">ژانر</label>
+<div class="relative">
+<button id="genreDropdownBtn" class="bg-white border border-gray-300 rounded-button px-4 py-2 w-40 text-right flex items-center justify-between">
+<span id="selectedGenre">همه ژانرها</span>
+<i class="ri-arrow-down-s-line"></i>
+</button>
+<div id="genreDropdown" class="absolute top-full right-0 mt-1 w-40 bg-white border border-gray-300 rounded-lg shadow-lg hidden z-50">
+<div class="py-1">
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-genre="all">همه ژانرها</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-genre="action">اکشن</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-genre="adventure">ماجراجویی</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-genre="strategy">استراتژی</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-genre="puzzle">پازل</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-genre="racing">مسابقه‌ای</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-genre="horror">ترسناک</button>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">پلتفرم</label>
+<div class="relative">
+<button id="platformDropdownBtn" class="bg-white border border-gray-300 rounded-button px-4 py-2 w-40 text-right flex items-center justify-between">
+<span id="selectedPlatform">همه پلتفرم‌ها</span>
+<i class="ri-arrow-down-s-line"></i>
+</button>
+<div id="platformDropdown" class="absolute top-full right-0 mt-1 w-40 bg-white border border-gray-300 rounded-lg shadow-lg hidden z-50">
+<div class="py-1">
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-platform="all">همه پلتفرم‌ها</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-platform="PC">PC</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-platform="mobile">موبایل</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-platform="console">کنسول</button>
+</div>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">مرتب‌سازی</label>
+<div class="relative">
+<button id="sortDropdownBtn" class="bg-white border border-gray-300 rounded-button px-4 py-2 w-40 text-right flex items-center justify-between">
+<span id="selectedSort">جدیدترین</span>
+<i class="ri-arrow-down-s-line"></i>
+</button>
+<div id="sortDropdown" class="absolute top-full right-0 mt-1 w-40 bg-white border border-gray-300 rounded-lg shadow-lg hidden z-50">
+<div class="py-1">
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-sort="newest">جدیدترین</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-sort="popular">محبوب‌ترین</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-sort="bestselling">پرفروش‌ترین</button>
+<button class="w-full px-4 py-2 text-right hover:bg-gray-100 transition" data-sort="oldest">قدیمی‌ترین</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Games Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Game 1 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<div class="relative game-card">
+<img src="https://readdy.ai/api/search-image?query=cyberpunk%20style%20action%20game%20screenshot%20with%20neon%20lights%2C%20futuristic%20city%2C%20high%20quality%2C%20detailed%2C%20professional%20game%20screenshot%20with%20dark%20background%20and%20purple%20highlights&width=600&height=400&seq=2&orientation=landscape" alt="نبرد سایبری" class="w-full h-48 object-cover object-top">
+<div class="game-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition flex items-end p-4">
+<a href="#" class="text-white bg-primary bg-opacity-90 px-4 py-2 rounded-button whitespace-nowrap">مشاهده جزئیات</a>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">نبرد سایبری</h3>
+<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">اکشن</span>
+</div>
+<p class="text-gray-600 text-sm mb-4">یک بازی اکشن مهیج در دنیای آینده با المان‌های سایبرپانک و مبارزات نفس‌گیر</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-6 h-6 flex items-center justify-center text-yellow-500">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-gray-700">۴.۸</span>
+</div>
+<div class="flex space-x-2 space-x-reverse">
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PC</span>
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">کنسول</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Game 2 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<div class="relative game-card">
+<img src="https://readdy.ai/api/search-image?query=fantasy%20adventure%20game%20screenshot%20with%20magical%20forest%2C%20mystical%20creatures%2C%20high%20quality%2C%20detailed%2C%20professional%20game%20screenshot%20with%20vibrant%20colors&width=600&height=400&seq=3&orientation=landscape" alt="افسانه جادویی" class="w-full h-48 object-cover object-top">
+<div class="game-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition flex items-end p-4">
+<a href="#" class="text-white bg-primary bg-opacity-90 px-4 py-2 rounded-button whitespace-nowrap">مشاهده جزئیات</a>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">افسانه جادویی</h3>
+<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">ماجراجویی</span>
+</div>
+<p class="text-gray-600 text-sm mb-4">سفری حماسی در سرزمینی فانتزی با موجودات افسانه‌ای و معماهای پیچیده</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-6 h-6 flex items-center justify-center text-yellow-500">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-gray-700">۴.۶</span>
+</div>
+<div class="flex space-x-2 space-x-reverse">
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">موبایل</span>
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PC</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Game 3 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<div class="relative game-card">
+<img src="https://readdy.ai/api/search-image?query=strategy%20game%20screenshot%20with%20top-down%20view%2C%20military%20units%2C%20base%20building%2C%20high%20quality%2C%20detailed%2C%20professional%20game%20screenshot%20with%20tactical%20elements&width=600&height=400&seq=4&orientation=landscape" alt="فرماندهان نبرد" class="w-full h-48 object-cover object-top">
+<div class="game-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition flex items-end p-4">
+<a href="#" class="text-white bg-primary bg-opacity-90 px-4 py-2 rounded-button whitespace-nowrap">مشاهده جزئیات</a>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">فرماندهان نبرد</h3>
+<span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">استراتژی</span>
+</div>
+<p class="text-gray-600 text-sm mb-4">بازی استراتژی محور با امکان ساخت پایگاه، مدیریت منابع و نبردهای تاکتیکی</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-6 h-6 flex items-center justify-center text-yellow-500">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-gray-700">۴.۷</span>
+</div>
+<div class="flex space-x-2 space-x-reverse">
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PC</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Game 4 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<div class="relative game-card">
+<img src="https://readdy.ai/api/search-image?query=puzzle%20game%20screenshot%20with%20colorful%20blocks%2C%20brain%20teasers%2C%20high%20quality%2C%20detailed%2C%20professional%20game%20screenshot%20with%20bright%20colors&width=600&height=400&seq=5&orientation=landscape" alt="معمای ذهن" class="w-full h-48 object-cover object-top">
+<div class="game-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition flex items-end p-4">
+<a href="#" class="text-white bg-primary bg-opacity-90 px-4 py-2 rounded-button whitespace-nowrap">مشاهده جزئیات</a>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">معمای ذهن</h3>
+<span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">پازل</span>
+</div>
+<p class="text-gray-600 text-sm mb-4">چالش‌های فکری و معماهای پیچیده برای تقویت مهارت‌های حل مسئله</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-6 h-6 flex items-center justify-center text-yellow-500">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-gray-700">۴.۹</span>
+</div>
+<div class="flex space-x-2 space-x-reverse">
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">موبایل</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Game 5 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<div class="relative game-card">
+<img src="https://readdy.ai/api/search-image?query=racing%20game%20screenshot%20with%20futuristic%20vehicles%2C%20neon%20tracks%2C%20high%20speed%2C%20high%20quality%2C%20detailed%2C%20professional%20game%20screenshot%20with%20motion%20blur&width=600&height=400&seq=6&orientation=landscape" alt="مسابقه نئون" class="w-full h-48 object-cover object-top">
+<div class="game-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition flex items-end p-4">
+<a href="#" class="text-white bg-primary bg-opacity-90 px-4 py-2 rounded-button whitespace-nowrap">مشاهده جزئیات</a>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">مسابقه نئون</h3>
+<span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">مسابقه‌ای</span>
+</div>
+<p class="text-gray-600 text-sm mb-4">مسابقات سرعت هیجان‌انگیز با ماشین‌های فوق‌العاده در مسیرهای نئونی آینده</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-6 h-6 flex items-center justify-center text-yellow-500">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-gray-700">۴.۵</span>
+</div>
+<div class="flex space-x-2 space-x-reverse">
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">کنسول</span>
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PC</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Game 6 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<div class="relative game-card">
+<img src="https://readdy.ai/api/search-image?query=horror%20game%20screenshot%20with%20dark%20atmosphere%2C%20abandoned%20building%2C%20eerie%20lighting%2C%20high%20quality%2C%20detailed%2C%20professional%20game%20screenshot%20with%20scary%20elements&width=600&height=400&seq=7&orientation=landscape" alt="کابوس تاریکی" class="w-full h-48 object-cover object-top">
+<div class="game-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 transition flex items-end p-4">
+<a href="#" class="text-white bg-primary bg-opacity-90 px-4 py-2 rounded-button whitespace-nowrap">مشاهده جزئیات</a>
+</div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold">کابوس تاریکی</h3>
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">ترسناک</span>
+</div>
+<p class="text-gray-600 text-sm mb-4">یک تجربه ترسناک و روانشناختی در ساختمانی متروکه با موجودات وحشتناک</p>
+<div class="flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-6 h-6 flex items-center justify-center text-yellow-500">
+<i class="ri-star-fill"></i>
+</div>
+<span class="text-gray-700">۴.۴</span>
+</div>
+<div class="flex space-x-2 space-x-reverse">
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">PC</span>
+<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">کنسول</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text-center mt-10">
+<a href="#" class="inline-block bg-white border border-primary text-primary px-6 py-3 rounded-button hover:bg-primary hover:text-white transition whitespace-nowrap">مشاهده همه بازی‌ها</a>
+</div>
+</div>
+</section>
+<!-- Team Section -->
+<section id="team" class="py-16 bg-white">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold mb-4">تیم ما</h2>
+<p class="text-gray-600 max-w-2xl mx-auto">آشنایی با تیم خلاق و متخصص استودیو بازی‌سازی BrainCraft</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+<!-- Team Member 1 -->
+<div class="team-card bg-white rounded-lg overflow-hidden shadow-md">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20Persian%20male%20game%20director%2C%20mid%2030s%2C%20confident%2C%20creative%2C%20studio%20lighting%2C%20high%20quality%2C%20detailed&width=400&height=400&seq=8&orientation=squarish" alt="علی محمدی" class="w-full h-64 object-cover object-top">
+<div class="p-4">
+<h3 class="text-xl font-bold mb-1">علی محمدی</h3>
+<p class="text-primary mb-3">مدیر استودیو</p>
+<p class="text-gray-600 text-sm mb-4">با بیش از ۱۰ سال تجربه در صنعت بازی‌سازی و مدیریت پروژه‌های بزرگ</p>
+<div class="flex space-x-3 space-x-reverse">
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-mail-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<!-- Team Member 2 -->
+<div class="team-card bg-white rounded-lg overflow-hidden shadow-md">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20Persian%20female%20lead%20game%20designer%2C%20late%2020s%2C%20creative%2C%20artistic%2C%20studio%20lighting%2C%20high%20quality%2C%20detailed&width=400&height=400&seq=9&orientation=squarish" alt="سارا رضایی" class="w-full h-64 object-cover object-top">
+<div class="p-4">
+<h3 class="text-xl font-bold mb-1">سارا رضایی</h3>
+<p class="text-primary mb-3">طراح ارشد بازی</p>
+<p class="text-gray-600 text-sm mb-4">متخصص در طراحی مکانیک‌های بازی و سیستم‌های تعاملی با رویکرد کاربرمحور</p>
+<div class="flex space-x-3 space-x-reverse">
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-behance-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-mail-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<!-- Team Member 3 -->
+<div class="team-card bg-white rounded-lg overflow-hidden shadow-md">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20Persian%20male%20lead%20programmer%2C%20early%2030s%2C%20technical%2C%20focused%2C%20studio%20lighting%2C%20high%20quality%2C%20detailed&width=400&height=400&seq=10&orientation=squarish" alt="امیر حسینی" class="w-full h-64 object-cover object-top">
+<div class="p-4">
+<h3 class="text-xl font-bold mb-1">امیر حسینی</h3>
+<p class="text-primary mb-3">برنامه‌نویس ارشد</p>
+<p class="text-gray-600 text-sm mb-4">متخصص در توسعه موتورهای بازی و بهینه‌سازی عملکرد در پلتفرم‌های مختلف</p>
+<div class="flex space-x-3 space-x-reverse">
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-github-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-mail-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<!-- Team Member 4 -->
+<div class="team-card bg-white rounded-lg overflow-hidden shadow-md">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20Persian%20female%20art%20director%2C%20mid%2030s%2C%20artistic%2C%20stylish%2C%20studio%20lighting%2C%20high%20quality%2C%20detailed&width=400&height=400&seq=11&orientation=squarish" alt="نیلوفر کریمی" class="w-full h-64 object-cover object-top">
+<div class="p-4">
+<h3 class="text-xl font-bold mb-1">نیلوفر کریمی</h3>
+<p class="text-primary mb-3">مدیر هنری</p>
+<p class="text-gray-600 text-sm mb-4">هنرمند و طراح با تخصص در طراحی کاراکتر، محیط و رابط کاربری بازی‌ها</p>
+<div class="flex space-x-3 space-x-reverse">
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-instagram-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-artstation-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<!-- Team Member 5 -->
+<div class="team-card bg-white rounded-lg overflow-hidden shadow-md">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20Persian%20male%20sound%20designer%2C%20late%2020s%2C%20creative%2C%20music%20oriented%2C%20studio%20lighting%2C%20high%20quality%2C%20detailed&width=400&height=400&seq=12&orientation=squarish" alt="مهدی صادقی" class="w-full h-64 object-cover object-top">
+<div class="p-4">
+<h3 class="text-xl font-bold mb-1">مهدی صادقی</h3>
+<p class="text-primary mb-3">طراح صدا و موسیقی</p>
+<p class="text-gray-600 text-sm mb-4">آهنگساز و طراح افکت‌های صوتی با تجربه در ساخت موسیقی متن بازی‌ها</p>
+<div class="flex space-x-3 space-x-reverse">
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-spotify-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-soundcloud-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<!-- Team Member 6 -->
+<div class="team-card bg-white rounded-lg overflow-hidden shadow-md">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20Persian%20female%20narrative%20designer%2C%20early%2030s%2C%20thoughtful%2C%20creative%2C%20studio%20lighting%2C%20high%20quality%2C%20detailed&width=400&height=400&seq=13&orientation=squarish" alt="فاطمه احمدی" class="w-full h-64 object-cover object-top">
+<div class="p-4">
+<h3 class="text-xl font-bold mb-1">فاطمه احمدی</h3>
+<p class="text-primary mb-3">طراح داستان</p>
+<p class="text-gray-600 text-sm mb-4">نویسنده و طراح روایت با تخصص در خلق داستان‌های تعاملی و شخصیت‌پردازی</p>
+<div class="flex space-x-3 space-x-reverse">
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-book-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<!-- Team Member 7 -->
+<div class="team-card bg-white rounded-lg overflow-hidden shadow-md">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20Persian%20male%20QA%20lead%2C%20mid%2030s%2C%20analytical%2C%20detail-oriented%2C%20studio%20lighting%2C%20high%20quality%2C%20detailed&width=400&height=400&seq=14&orientation=squarish" alt="رضا نوری" class="w-full h-64 object-cover object-top">
+<div class="p-4">
+<h3 class="text-xl font-bold mb-1">رضا نوری</h3>
+<p class="text-primary mb-3">مدیر تضمین کیفیت</p>
+<p class="text-gray-600 text-sm mb-4">متخصص در تست و ارزیابی بازی‌ها با رویکرد دقیق و جزئی‌نگر</p>
+<div class="flex space-x-3 space-x-reverse">
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-github-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-mail-fill"></i>
+</a>
+</div>
+</div>
+</div>
+<!-- Team Member 8 -->
+<div class="team-card bg-white rounded-lg overflow-hidden shadow-md">
+<img src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20Persian%20female%20marketing%20manager%2C%20early%2030s%2C%20confident%2C%20outgoing%2C%20studio%20lighting%2C%20high%20quality%2C%20detailed&width=400&height=400&seq=15&orientation=squarish" alt="مریم تهرانی" class="w-full h-64 object-cover object-top">
+<div class="p-4">
+<h3 class="text-xl font-bold mb-1">مریم تهرانی</h3>
+<p class="text-primary mb-3">مدیر بازاریابی</p>
+<p class="text-gray-600 text-sm mb-4">متخصص در استراتژی‌های بازاریابی دیجیتال و ارتباط با جامعه گیمرها</p>
+<div class="flex space-x-3 space-x-reverse">
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="social-icon w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-instagram-fill"></i>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section id="about" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div>
+<h2 class="text-3xl font-bold mb-6">درباره استودیو <span class="text-primary">BrainCraft</span></h2>
+<p class="text-gray-600 mb-4">استودیو بازی‌سازی BrainCraft در سال ۱۳۹۵ با هدف خلق تجربه‌های بازی نوآورانه و با کیفیت تأسیس شد. ما یک تیم متشکل از طراحان، برنامه‌نویسان، هنرمندان و داستان‌نویسان خلاق هستیم که با اشتیاق برای ساخت بازی‌های منحصر به فرد کار می‌کنیم.</p>
+<p class="text-gray-600 mb-4">فلسفه ما در BrainCraft ترکیب هنر، تکنولوژی و داستان‌سرایی برای خلق تجربه‌های تعاملی است که نه تنها سرگرم‌کننده هستند، بلکه به چالش‌های فکری و احساسی نیز می‌پردازند. ما معتقدیم بازی‌ها می‌توانند فراتر از سرگرمی باشند و به عنوان یک رسانه هنری قدرتمند عمل کنند.</p>
+<p class="text-gray-600 mb-6">در طول سال‌های فعالیت، استودیوی ما افتخار همکاری با برخی از بهترین استعدادهای صنعت بازی و همچنین انتشار بازی‌هایی را داشته که توسط میلیون‌ها بازیکن در سراسر جهان تجربه شده‌اند.</p>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-white p-4 rounded-lg shadow-sm">
+<div class="text-primary text-xl font-bold mb-2">ماموریت ما</div>
+<p class="text-gray-600 text-sm">خلق بازی‌های نوآورانه و با کیفیت که مرزهای خلاقیت را جابجا می‌کنند</p>
+</div>
+<div class="bg-white p-4 rounded-lg shadow-sm">
+<div class="text-primary text-xl font-bold mb-2">چشم‌انداز ما</div>
+<p class="text-gray-600 text-sm">تبدیل شدن به یکی از استودیوهای پیشرو در صنعت بازی‌سازی در سطح جهانی</p>
+</div>
+</div>
+<a href="#contact" class="inline-block bg-primary text-white px-6 py-3 rounded-button hover:bg-opacity-90 transition whitespace-nowrap">تماس با ما</a>
+</div>
+<div class="relative">
+<img src="https://readdy.ai/api/search-image?query=modern%20game%20development%20studio%20interior%2C%20team%20working%20together%2C%20creative%20workspace%2C%20high%20quality%2C%20detailed%2C%20professional%20office%20with%20gaming%20elements%2C%20computers%2C%20concept%20art%20on%20walls&width=600&height=800&seq=16&orientation=portrait" alt="استودیو BrainCraft" class="w-full h-auto rounded-lg shadow-lg">
+<div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg">
+<div class="text-gray-800 font-bold">از سال ۱۳۹۵</div>
+<div class="text-primary">۷+ سال تجربه</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Blog Section -->
+<section id="blog" class="py-16 bg-white">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold mb-4">آخرین مقالات وبلاگ</h2>
+<p class="text-gray-600 max-w-2xl mx-auto">آخرین اخبار، آموزش‌ها و مقالات تخصصی در حوزه بازی‌سازی</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Blog Post 1 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<img src="https://readdy.ai/api/search-image?query=game%20development%20process%2C%20team%20working%20on%20computer%20screens%2C%20programming%20code%20visible%2C%20high%20quality%2C%20detailed%2C%20professional&width=600&height=400&seq=17&orientation=landscape" alt="فرآیند توسعه بازی" class="w-full h-48 object-cover object-top">
+<div class="p-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm text-gray-500">۲۳ اردیبهشت ۱۴۰۴</span>
+<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">آموزشی</span>
+</div>
+<h3 class="text-xl font-bold mb-2">آشنایی با فرآیند توسعه بازی‌های ویدیویی</h3>
+<p class="text-gray-600 text-sm mb-4">در این مقاله با مراحل مختلف توسعه یک بازی ویدیویی از ایده اولیه تا انتشار نهایی آشنا می‌شوید...</p>
+<a href="#" class="text-primary hover:underline flex items-center">
+<span>ادامه مطلب</span>
+<i class="ri-arrow-left-line mr-1"></i>
+</a>
+</div>
+</div>
+<!-- Blog Post 2 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<img src="https://readdy.ai/api/search-image?query=game%20art%20design%2C%20digital%20painting%2C%20concept%20art%20creation%2C%20artist%20working%20on%20tablet%2C%20high%20quality%2C%20detailed%2C%20professional&width=600&height=400&seq=18&orientation=landscape" alt="طراحی هنری بازی" class="w-full h-48 object-cover object-top">
+<div class="p-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm text-gray-500">۱۵ اردیبهشت ۱۴۰۴</span>
+<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">هنر دیجیتال</span>
+</div>
+<h3 class="text-xl font-bold mb-2">اصول طراحی هنری در بازی‌های ویدیویی</h3>
+<p class="text-gray-600 text-sm mb-4">بررسی تکنیک‌های طراحی کاراکتر، محیط و رابط کاربری در بازی‌های مدرن و تأثیر آن‌ها بر تجربه کاربر...</p>
+<a href="#" class="text-primary hover:underline flex items-center">
+<span>ادامه مطلب</span>
+<i class="ri-arrow-left-line mr-1"></i>
+</a>
+</div>
+</div>
+<!-- Blog Post 3 -->
+<div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+<img src="https://readdy.ai/api/search-image?query=game%20industry%20trends%2C%20futuristic%20gaming%20setup%2C%20VR%20headset%2C%20augmented%20reality%2C%20high%20quality%2C%20detailed%2C%20professional&width=600&height=400&seq=19&orientation=landscape" alt="روندهای صنعت بازی" class="w-full h-48 object-cover object-top">
+<div class="p-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm text-gray-500">۸ اردیبهشت ۱۴۰۴</span>
+<span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">تکنولوژی</span>
+</div>
+<h3 class="text-xl font-bold mb-2">روندهای آینده صنعت بازی‌سازی در سال ۱۴۰۴</h3>
+<p class="text-gray-600 text-sm mb-4">بررسی جدیدترین تکنولوژی‌ها و روندهای صنعت بازی‌سازی شامل واقعیت مجازی، هوش مصنوعی و بلاکچین...</p>
+<a href="#" class="text-primary hover:underline flex items-center">
+<span>ادامه مطلب</span>
+<i class="ri-arrow-left-line mr-1"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="text-center mt-10">
+<a href="#" class="inline-block bg-white border border-primary text-primary px-6 py-3 rounded-button hover:bg-primary hover:text-white transition whitespace-nowrap">مشاهده همه مقالات</a>
+</div>
+</div>
+</section>
+<!-- Donate Section -->
+<section id="donate" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold mb-4">حمایت از استودیو</h2>
+<p class="text-gray-600 max-w-2xl mx-auto">با حمایت مالی از استودیو BrainCraft، به ما در توسعه بازی‌های بهتر و خلاقانه‌تر کمک کنید</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div>
+<div class="bg-white p-6 rounded-lg shadow-md mb-8">
+<h3 class="text-xl font-bold mb-4">پروژه فعلی: <span class="text-primary">نبرد سایبری ۲</span></h3>
+<p class="text-gray-600 mb-4">ما در حال توسعه نسخه دوم بازی محبوب نبرد سایبری هستیم و به حمایت شما برای تکمیل این پروژه نیاز داریم.</p>
+<div class="mb-4">
+<div class="flex justify-between text-sm mb-1">
+<span>پیشرفت جمع‌آوری</span>
+<span>۶۵٪ (۱۳۰ میلیون تومان از ۲۰۰ میلیون)</span>
+</div>
+<div class="donate-progress">
+<div class="donate-progress-bar"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4 mb-6">
+<button class="bg-gray-100 text-gray-800 py-2 rounded-button hover:bg-gray-200 transition whitespace-nowrap">۵۰ هزار تومان</button>
+<button class="bg-gray-100 text-gray-800 py-2 rounded-button hover:bg-gray-200 transition whitespace-nowrap">۱۰۰ هزار تومان</button>
+<button class="bg-gray-100 text-gray-800 py-2 rounded-button hover:bg-gray-200 transition whitespace-nowrap">۲۰۰ هزار تومان</button>
+</div>
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-1">مبلغ دلخواه (تومان)</label>
+<input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="مبلغ را وارد کنید">
+</div>
+<div class="mb-6">
+<label class="custom-checkbox mb-2 block">
+<input type="checkbox">
+<span class="checkmark"></span>
+نام من در لیست حامیان نمایش داده شود
+</label>
+<label class="custom-checkbox block">
+<input type="checkbox">
+<span class="checkmark"></span>
+می‌خواهم از به‌روزرسانی‌های پروژه مطلع شوم
+</label>
+</div>
+<div class="flex flex-wrap gap-4">
+<button id="zarinpalBtn" class="bg-primary text-white px-6 py-3 rounded-button hover:bg-opacity-90 transition whitespace-nowrap">پرداخت با زرین‌پال</button>
+<div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold">پرداخت امن زرین‌پال</h3>
+      <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+        <i class="ri-close-line ri-lg"></i>
+      </button>
+    </div>
+    
+    <div class="bg-gray-50 rounded p-4 mb-6">
+      <div class="flex justify-between mb-2">
+        <span class="text-gray-600">پروژه:</span>
+        <span class="font-medium">نبرد سایبری ۲</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-600">مبلغ قابل پرداخت:</span>
+        <span class="font-medium text-primary" id="paymentAmount">۱۰۰,۰۰۰ تومان</span>
+      </div>
+    </div>
+    <form id="paymentForm" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">شماره کارت</label>
+        <input type="text" maxlength="19" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="xxxx-xxxx-xxxx-xxxx">
+      </div>
+      
+      <div class="grid grid-cols-3 gap-4">
+        <div class="col-span-1">
+          <label class="block text-sm font-medium text-gray-700 mb-1">CVV2</label>
+          <input type="text" maxlength="4" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="xxx">
+        </div>
+        <div class="col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">تاریخ انقضا</label>
+          <div class="grid grid-cols-2 gap-2">
+            <input type="text" maxlength="2" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="ماه">
+            <input type="text" maxlength="2" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="سال">
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-center bg-gray-50 p-4 rounded">
+        <img src="https://www.zarinpal.com/icons/logo.svg" alt="زرین‌پال" class="h-8">
+        <div class="mr-3 text-sm text-gray-600">
+          <div class="flex items-center">
+            <i class="ri-shield-check-line text-green-600 ml-1"></i>
+            پرداخت امن زرین‌پال
+          </div>
+          <div class="flex items-center mt-1">
+            <i class="ri-lock-line text-gray-500 ml-1"></i>
+            اطلاعات پرداخت شما رمزنگاری شده است
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-4 mt-6">
+        <button type="submit" class="flex-1 bg-primary text-white px-6 py-3 rounded-button hover:bg-opacity-90 transition whitespace-nowrap">تأیید و پرداخت</button>
+        <button type="button" id="cancelPayment" class="flex-1 bg-gray-100 text-gray-800 px-6 py-3 rounded-button hover:bg-gray-200 transition whitespace-nowrap">انصراف</button>
+      </div>
+    </form>
+  </div>
+</div>
+<button class="bg-white border border-gray-300 text-gray-800 px-6 py-3 rounded-button hover:bg-gray-50 transition flex items-center whitespace-nowrap">
+<i class="ri-paypal-fill mr-2 text-blue-600"></i>
+پرداخت با PayPal
+</button>
+</div>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-bold mb-4">مزایای حمایت</h3>
+<ul class="space-y-3">
+<li class="flex items-start">
+<div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
+<i class="ri-check-line"></i>
+</div>
+<span>دسترسی زودهنگام به نسخه‌های آزمایشی بازی‌ها</span>
+</li>
+<li class="flex items-start">
+<div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
+<i class="ri-check-line"></i>
+</div>
+<span>نام شما در بخش اعتبارات بازی</span>
+</li>
+<li class="flex items-start">
+<div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
+<i class="ri-check-line"></i>
+</div>
+<span>دریافت محتوای انحصاری و آیتم‌های ویژه درون بازی</span>
+</li>
+<li class="flex items-start">
+<div class="w-6 h-6 flex items-center justify-center text-primary mr-2">
+<i class="ri-check-line"></i>
+</div>
+<span>شرکت در جلسات طوفان فکری و تأثیرگذاری بر روند توسعه</span>
+</li>
+</ul>
+</div>
+</div>
+<div>
+<img src="https://readdy.ai/api/search-image?query=cyberpunk%20style%20game%20character%2C%20futuristic%20soldier%20with%20neon%20highlights%2C%20detailed%20armor%2C%20high%20quality%2C%20concept%20art%2C%20professional%20game%20art%20with%20dark%20background%20and%20purple%20highlights&width=600&height=800&seq=20&orientation=portrait" alt="نبرد سایبری ۲" class="w-full h-auto rounded-lg shadow-lg">
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section id="contact" class="py-16 bg-white">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold mb-4">تماس با ما</h2>
+<p class="text-gray-600 max-w-2xl mx-auto">برای ارتباط با تیم BrainCraft، همکاری یا هر گونه سوال، با ما در تماس باشید</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<div>
+<form class="bg-white p-6 rounded-lg shadow-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">نام و نام خانوادگی</label>
+<input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="نام خود را وارد کنید">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">ایمیل</label>
+<input type="email" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="ایمیل خود را وارد کنید">
+</div>
+</div>
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-1">موضوع</label>
+<input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="موضوع پیام خود را وارد کنید">
+</div>
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-1">پیام</label>
+<textarea rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="پیام خود را بنویسید"></textarea>
+</div>
+<div class="mb-6">
+<label class="custom-checkbox block">
+<input type="checkbox">
+<span class="checkmark"></span>
+با قوانین حریم خصوصی موافقم
+</label>
+</div>
+<button type="submit" class="bg-primary text-white px-6 py-3 rounded-button hover:bg-opacity-90 transition whitespace-nowrap">ارسال پیام</button>
+</form>
+</div>
+<div>
+<div class="bg-white p-6 rounded-lg shadow-md mb-8">
+<h3 class="text-xl font-bold mb-4">اطلاعات تماس</h3>
+<div class="space-y-4">
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center text-primary bg-primary bg-opacity-10 rounded-full mr-3">
+<i class="ri-map-pin-line"></i>
+</div>
+<div>
+<div class="font-medium">آدرس:</div>
+<div class="text-gray-600">تهران، خیابان ولیعصر، خیابان توانیر، پلاک ۱۲۳، طبقه ۴، واحد ۸</div>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center text-primary bg-primary bg-opacity-10 rounded-full mr-3">
+<i class="ri-mail-line"></i>
+</div>
+<div>
+<div class="font-medium">ایمیل:</div>
+<div class="text-gray-600">info@braincraft-studios.com</div>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center text-primary bg-primary bg-opacity-10 rounded-full mr-3">
+<i class="ri-phone-line"></i>
+</div>
+<div>
+<div class="font-medium">تلفن:</div>
+<div class="text-gray-600">۰۲۱-۸۸۷۷۶۶۵۵</div>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center text-primary bg-primary bg-opacity-10 rounded-full mr-3">
+<i class="ri-time-line"></i>
+</div>
+<div>
+<div class="font-medium">ساعات کاری:</div>
+<div class="text-gray-600">شنبه تا چهارشنبه: ۹ صبح تا ۶ عصر</div>
+<div class="text-gray-600">پنجشنبه: ۹ صبح تا ۱ بعد از ظهر</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-bold mb-4">موقعیت ما</h3>
+<div class="w-full h-64 rounded-lg overflow-hidden">
+<img src="https://public.readdy.ai/gen_page/map_placeholder_1280x720.png" alt="نقشه دفتر BrainCraft" class="w-full h-full object-cover">
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-gray-900 text-white pt-12 pb-6">
+<div class="container mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+<div>
+<a href="#" class="text-3xl font-['Pacifico'] text-primary mb-4 block">BrainCraft</a>
+<p class="text-gray-400 mb-6">استودیو بازی‌سازی خلاق و نوآور با تمرکز بر خلق تجربه‌های منحصر به فرد</p>
+<div class="flex space-x-4 space-x-reverse">
+<a href="#" class="social-icon w-10 h-10 flex items-center justify-center text-gray-400 hover:text-primary">
+<i class="ri-instagram-fill"></i>
+</a>
+<a href="#" class="social-icon w-10 h-10 flex items-center justify-center text-gray-400 hover:text-primary">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="social-icon w-10 h-10 flex items-center justify-center text-gray-400 hover:text-primary">
+<i class="ri-linkedin-fill"></i>
+</a>
+<a href="#" class="social-icon w-10 h-10 flex items-center justify-center text-gray-400 hover:text-primary">
+<i class="ri-youtube-fill"></i>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-4">لینک‌های سریع</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition">خانه</a></li>
+<li><a href="#games" class="text-gray-400 hover:text-white transition">بازی‌ها</a></li>
+<li><a href="#team" class="text-gray-400 hover:text-white transition">تیم ما</a></li>
+<li><a href="#about" class="text-gray-400 hover:text-white transition">درباره ما</a></li>
+<li><a href="#blog" class="text-gray-400 hover:text-white transition">وبلاگ</a></li>
+<li><a href="#donate" class="text-gray-400 hover:text-white transition">حمایت</a></li>
+<li><a href="#contact" class="text-gray-400 hover:text-white transition">تماس با ما</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-4">بازی‌های ما</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition">نبرد سایبری</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition">افسانه جادویی</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition">فرماندهان نبرد</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition">معمای ذهن</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition">مسابقه نئون</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition">کابوس تاریکی</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-4">خبرنامه</h3>
+<p class="text-gray-400 mb-4">برای دریافت آخرین اخبار و تخفیف‌های ویژه در خبرنامه ما عضو شوید</p>
+<form>
+<div class="flex mb-4">
+<input type="email" class="flex-grow px-4 py-2 rounded-r-button focus:outline-none" placeholder="ایمیل خود را وارد کنید">
+<button type="submit" class="bg-primary text-white px-4 py-2 rounded-l-button hover:bg-opacity-90 transition whitespace-nowrap">عضویت</button>
+</div>
+<label class="custom-checkbox block text-gray-400">
+<input type="checkbox">
+<span class="checkmark"></span>
+با قوانین حریم خصوصی موافقم
+</label>
+</form>
+</div>
+</div>
+<div class="border-t border-gray-800 pt-6 mt-6">
+<div class="flex flex-col md:flex-row justify-between items-center">
+<div class="text-gray-400 text-sm mb-4 md:mb-0">
+© ۱۴۰۴ BrainCraft Studios. تمامی حقوق محفوظ است.
+</div>
+<div class="flex flex-wrap gap-4">
+<a href="#" class="text-gray-400 text-sm hover:text-white transition">قوانین و مقررات</a>
+<a href="#" class="text-gray-400 text-sm hover:text-white transition">حریم خصوصی</a>
+<a href="#" class="text-gray-400 text-sm hover:text-white transition">شرایط استفاده</a>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Smooth scrolling for navigation links
+document.querySelectorAll('.nav-link').forEach(link => {
+link.addEventListener('click', function(e) {
+e.preventDefault();
+const targetId = this.getAttribute('href');
+if (targetId === '#') {
+window.scrollTo({
+top: 0,
+behavior: 'smooth'
+});
+} else {
+const targetElement = document.querySelector(targetId);
+if (targetElement) {
+const headerOffset = 80;
+const elementPosition = targetElement.getBoundingClientRect().top;
+const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+window.scrollTo({
+top: offsetPosition,
+behavior: 'smooth'
+});
+}
+}
+});
+});
+// Mobile menu toggle
+const menuButton = document.querySelector('button.md\\:hidden');
+const mobileMenu = document.querySelector('nav.hidden');
+// Sort dropdown functionality
+const sortDropdownBtn = document.getElementById('sortDropdownBtn');
+const sortDropdown = document.getElementById('sortDropdown');
+const selectedSort = document.getElementById('selectedSort');
+// Toggle sort dropdown
+sortDropdownBtn.addEventListener('click', function(e) {
+e.stopPropagation();
+sortDropdown.classList.toggle('hidden');
+});
+// Handle sort selection
+sortDropdown.addEventListener('click', function(e) {
+if (e.target.hasAttribute('data-sort')) {
+const sort = e.target.getAttribute('data-sort');
+selectedSort.textContent = e.target.textContent;
+// Get all game cards
+const gameContainer = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.gap-8');
+const gameCards = Array.from(gameContainer.children);
+// Sort games based on selected criteria
+gameCards.sort((a, b) => {
+if (sort === 'newest') {
+return -1; // Newest first
+} else if (sort === 'oldest') {
+return 1; // Oldest first
+} else if (sort === 'popular') {
+const ratingA = parseFloat(a.querySelector('.text-gray-700').textContent);
+const ratingB = parseFloat(b.querySelector('.text-gray-700').textContent);
+return ratingB - ratingA;
+} else if (sort === 'bestselling') {
+// For demo purposes, we'll use a random sort for bestselling
+return Math.random() - 0.5;
+}
+});
+// Reorder the games in the DOM
+gameCards.forEach(card => gameContainer.appendChild(card));
+sortDropdown.classList.add('hidden');
+}
+});
+// Genre dropdown functionality
+const genreDropdownBtn = document.getElementById('genreDropdownBtn');
+const genreDropdown = document.getElementById('genreDropdown');
+const selectedGenre = document.getElementById('selectedGenre');
+const gameCards = document.querySelectorAll('.game-card');
+// Platform dropdown functionality
+const platformDropdownBtn = document.getElementById('platformDropdownBtn');
+const platformDropdown = document.getElementById('platformDropdown');
+const selectedPlatform = document.getElementById('selectedPlatform');
+// Toggle platform dropdown
+platformDropdownBtn.addEventListener('click', function(e) {
+e.stopPropagation();
+platformDropdown.classList.toggle('hidden');
+});
+// Handle platform selection
+platformDropdown.addEventListener('click', function(e) {
+if (e.target.hasAttribute('data-platform')) {
+const platform = e.target.getAttribute('data-platform');
+selectedPlatform.textContent = e.target.textContent;
+// Filter games
+gameCards.forEach(card => {
+const platformTags = Array.from(card.closest('.bg-white').querySelectorAll('.bg-gray-100')).map(tag => tag.textContent.trim());
+const parent = card.closest('.bg-white');
+if (platform === 'all') {
+parent.style.display = 'block';
+} else {
+parent.style.display = platformTags.includes(platform) ? 'block' : 'none';
+}
+});
+platformDropdown.classList.add('hidden');
+}
+});
+// Toggle dropdown
+genreDropdownBtn.addEventListener('click', function(e) {
+e.stopPropagation();
+genreDropdown.classList.toggle('hidden');
+});
+// Close dropdowns when clicking outside
+document.addEventListener('click', function() {
+genreDropdown.classList.add('hidden');
+platformDropdown.classList.add('hidden');
+sortDropdown.classList.add('hidden');
+});
+// Handle genre selection
+genreDropdown.addEventListener('click', function(e) {
+if (e.target.hasAttribute('data-genre')) {
+const genre = e.target.getAttribute('data-genre');
+selectedGenre.textContent = e.target.textContent;
+// Filter games
+gameCards.forEach(card => {
+const cardGenre = card.closest('.bg-white').querySelector('[class*="bg-"][class*="-100"]').textContent.trim().toLowerCase();
+const parent = card.closest('.bg-white');
+if (genre === 'all') {
+parent.style.display = 'block';
+} else {
+parent.style.display = cardGenre === genre ? 'block' : 'none';
+}
+});
+genreDropdown.classList.add('hidden');
+}
+});
+if (menuButton && mobileMenu) {
+menuButton.addEventListener('click', function() {
+mobileMenu.classList.toggle('hidden');
+mobileMenu.classList.toggle('flex');
+mobileMenu.classList.toggle('flex-col');
+mobileMenu.classList.toggle('absolute');
+mobileMenu.classList.toggle('top-16');
+mobileMenu.classList.toggle('right-0');
+mobileMenu.classList.toggle('bg-gray-900');
+mobileMenu.classList.toggle('w-full');
+mobileMenu.classList.toggle('p-4');
+mobileMenu.classList.toggle('z-50');
+});
+}
+});
+document.addEventListener('DOMContentLoaded', function() {
+// Language switcher
+const langButtons = document.querySelectorAll('.rounded-full.px-2.py-1');
+if (langButtons.length) {
+langButtons.forEach(button => {
+button.addEventListener('click', function() {
+langButtons.forEach(btn => {
+btn.classList.remove('tab-active');
+});
+this.classList.add('tab-active');
+});
+});
+}
+});
+document.addEventListener('DOMContentLoaded', function() {
+// Donation amount buttons
+const donateButtons = document.querySelectorAll('.bg-gray-100.text-gray-800.py-2');
+if (donateButtons.length) {
+donateButtons.forEach(button => {
+button.addEventListener('click', function() {
+donateButtons.forEach(btn => {
+btn.classList.remove('bg-primary', 'text-white');
+btn.classList.add('bg-gray-100', 'text-gray-800');
+});
+this.classList.remove('bg-gray-100', 'text-gray-800');
+this.classList.add('bg-primary', 'text-white');
+const amount = this.textContent.trim();
+document.getElementById('paymentAmount').textContent = amount + ' تومان';
+});
+});
+}
+// Payment Modal
+const modal = document.getElementById('paymentModal');
+const zarinpalBtn = document.getElementById('zarinpalBtn');
+const closeModal = document.getElementById('closeModal');
+const cancelPayment = document.getElementById('cancelPayment');
+const paymentForm = document.getElementById('paymentForm');
+function showModal() {
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+function hideModal() {
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+}
+zarinpalBtn.addEventListener('click', showModal);
+closeModal.addEventListener('click', hideModal);
+cancelPayment.addEventListener('click', hideModal);
+modal.addEventListener('click', function(e) {
+  if (e.target === modal) {
+    hideModal();
+  }
+});
+// Card number formatting
+const cardInput = paymentForm.querySelector('input[maxlength="19"]');
+cardInput.addEventListener('input', function(e) {
+  let value = e.target.value.replace(/\D/g, '');
+  let formattedValue = '';
+  for(let i = 0; i < value.length; i++) {
+    if(i > 0 && i % 4 === 0) {
+      formattedValue += '-';
+    }
+    formattedValue += value[i];
+  }
+  e.target.value = formattedValue;
+});
+// Form submission
+paymentForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  // Here you would typically handle the payment processing
+  // For demo purposes, we'll just show a success message
+  const successMessage = document.createElement('div');
+  successMessage.className = 'fixed top-4 left-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg';
+  successMessage.innerHTML = `
+    <div class="flex items-center">
+      <i class="ri-checkbox-circle-line text-green-500 text-xl ml-2"></i>
+      <span>پرداخت با موفقیت انجام شد</span>
+    </div>
+  `;
+  document.body.appendChild(successMessage);
+  hideModal();
+  setTimeout(() => {
+    successMessage.remove();
+  }, 3000);
+});
+});
+</script>
+</body>
+</html>
